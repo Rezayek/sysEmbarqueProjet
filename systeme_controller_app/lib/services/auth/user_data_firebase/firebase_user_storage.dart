@@ -15,7 +15,7 @@ class FirebaseUserStorage {
     required String userOwnEmail,
     required bool userHasLightsAccess,
   }) async {
-    final document = await users.add({
+     await users.add({
       userId: userOwnId,
       userEmail: userOwnEmail,
       userIsAllowedLights: userHasLightsAccess,

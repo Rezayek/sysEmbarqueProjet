@@ -5,7 +5,7 @@ import 'package:systeme_controller_app/services/auth/bloc/auth_bloc.dart';
 import 'package:systeme_controller_app/services/auth/bloc/auth_event.dart';
 import 'package:systeme_controller_app/services/auth/user_data_firebase/auth_user_data.dart';
 import 'package:systeme_controller_app/services/auth/user_data_firebase/firebase_user_storage.dart';
-import 'package:systeme_controller_app/views/main_views/lights_view.dart';
+import 'package:systeme_controller_app/views/main_views/controllers/lights_controller_view.dart';
 import 'package:systeme_controller_app/views/main_views/qr_view.dart';
 
 class MainView extends StatefulWidget {
@@ -70,7 +70,7 @@ class _MainViewState extends State<MainView> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => LightsView()));
+                                            builder: (context) => LightsControllerView()));
                                   }
                                 },
                                 child:  Container(

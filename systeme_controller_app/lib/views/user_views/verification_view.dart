@@ -5,7 +5,7 @@ import '../../services/auth/bloc/auth_bloc.dart';
 import '../../services/auth/bloc/auth_event.dart';
 
 class VerificationView extends StatefulWidget {
-  VerificationView({Key? key}) : super(key: key);
+  const VerificationView({Key? key}) : super(key: key);
 
   @override
   State<VerificationView> createState() => _VerificationViewState();

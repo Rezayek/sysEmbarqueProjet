@@ -6,15 +6,15 @@ detector = cv2.QRCodeDetector()
 while True:
     _, img = cap.read()
     data, bbox, _ = detector.detectAndDecode(img)
-    if bbox is not None:
-        if data:
-            print(data)
-    if cv2.waitKey(1) == ord("q"):
+    if data:
+        print(data)
         break
+    #if cv2.waitKey(1) == ord("q"):
+        #break
 
-cap.release()
+#cap.release()
 cv2.destroyAllWindows()
-dataTab = data.split('__')
+dataTab = data.split('_')
 userId = dataTab[0]
 system = dataTab[1]
 id =''
