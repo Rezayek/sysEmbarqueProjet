@@ -22,11 +22,24 @@ class _QrViewState extends State<QrView> {
   _QrViewState({required this.specificSystem});
   @override
   Widget build(BuildContext context) {
-    String qrCode = userId + '_' + specificSystem;
+    String qrCode = '${userId}_$specificSystem';
     GlobalKey globalKey = new GlobalKey();
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR code', style: TextStyle(fontSize: 20),),
+        title:  Container(
+          width: 150,
+          height: 70,
+          child: Row(
+            children: [
+              
+              IconButton(onPressed: (){
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                         MainView()), (Route<dynamic> route) => false);
+              }, icon: Icon(Icons.arrow_back)),
+              const SizedBox(width: 10,),
+              const Text('QR code', style: TextStyle(fontSize: 20),),
+            ],
+          )),
       ),
       body: Padding(
         padding: const EdgeInsets.all(25),
@@ -35,8 +48,9 @@ class _QrViewState extends State<QrView> {
             height: 300,
             width: 300,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('Hold your phone screen in the front of th camera', style: TextStyle(fontSize: 26),),
+                const Text('Hold your phone screen in the front of the camera', style: TextStyle(fontSize: 26),),
                 const SizedBox(
                   height: 20,
                 ),

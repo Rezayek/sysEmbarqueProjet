@@ -5,15 +5,18 @@ class AuthUserData {
   final String userDataId;
   final String userDataEmail;
   final bool userAccessLights;
+  final bool userAccessFans;
 
   AuthUserData(
       {required this.userDataId,
       required this.userDataEmail,
-      required this.userAccessLights});
+      required this.userAccessLights,
+      required this.userAccessFans});
 
   AuthUserData.fromSnapshot(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : userDataId = snapshot.id,
         userDataEmail = snapshot.data()[userEmail],
-        userAccessLights = snapshot.data()[userIsAllowedLights];
+        userAccessLights = snapshot.data()[userIsAllowedLights],
+        userAccessFans = snapshot.data()[userIsAllowedFans];
 }

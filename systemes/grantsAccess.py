@@ -25,6 +25,9 @@ docs = firestore_db.collection(u'users').where(u'user_id',u'==', userId,).get()
 
 for doc in docs:
     id = doc.id
+    item = doc.to_dict()
+
+print(item)    
 
 firestore_db.collection(u'users').document(id).update({u'user_access_'+system:True,})
 

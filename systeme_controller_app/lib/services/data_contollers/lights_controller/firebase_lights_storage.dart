@@ -3,23 +3,25 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:systeme_controller_app/services/data_contollers/lights_data_model.dart';
-import 'package:systeme_controller_app/services/data_contollers/lights_exceptions.dart';
+import 'lights_data_constants.dart';
+import 'lights_data_model.dart';
+import 'lights_exceptions.dart';
+
 
 class FirebaseLightsStorage {
   final lights = FirebaseFirestore.instance.collection("lights");
-  late List<LighrsDataModel> _lights = [] ;
-  late final StreamController<List<LighrsDataModel>> _lightsStream;
+  late List<LightsDataModel> _lights ;
+  late final StreamController<List<LightsDataModel>> _lightsStream;
   static final _shared = FirebaseLightsStorage._sharedInstance();
   FirebaseLightsStorage._sharedInstance() {
     _lightsStream =
-    StreamController<List<LighrsDataModel>>.broadcast(onListen: () {
+    StreamController<List<LightsDataModel>>.broadcast(onListen: () {
     _lightsStream.sink.add(_lights);
     });
   }
   factory FirebaseLightsStorage() => _shared;
 
-  Stream<List<LighrsDataModel>> light() {
+  Stream<List<LightsDataModel>> light() {
    _cacheLight();
    return _lightsStream.stream;
   }
@@ -30,15 +32,10 @@ class FirebaseLightsStorage {
   _lightsStream.add(_lights);
   }
 
-  Future<Iterable<LighrsDataModel>> getLights() async {
+  Future<Iterable<LightsDataModel>> getLights() async {
     try {
-      log('read');
-      log(lights.toString());
-      log(lights.doc().toString());
       final test = await lights.get().then((value) =>
-          value.docs.map((doc) => LighrsDataModel.fromSnapshot(doc)));
-      log(test.toList().toString());
-      log('read');
+          value.docs.map((doc) => LightsDataModel.fromSnapshot(doc)));
       return test;
     } catch (e) {
       throw ClouldNotFindLightsException();
@@ -46,10 +43,10 @@ class FirebaseLightsStorage {
   }
 
   Future<void> updateLight(
-      {required String light, required bool lightCondition, required String id}) async {
+      {required bool lightCondition, required String id}) async {
     try {
       
-      await lights.doc(id).update({light: lightCondition});
+      await lights.doc(id).update({lightData: lightCondition});
     } catch (e) {
       throw FailedToUpdateLightException();
     }

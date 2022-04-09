@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:systeme_controller_app/services/data_contollers/firebase_lights_storage.dart';
-import 'package:systeme_controller_app/services/data_contollers/lights_data_model.dart';
 
-import '../../../services/data_contollers/lights_data_constants.dart';
+import '../../../services/data_contollers/lights_controller/firebase_lights_storage.dart';
+import '../../../services/data_contollers/lights_controller/lights_data_model.dart';
+
 
 class LightsControllerView extends StatefulWidget {
   LightsControllerView({Key? key}) : super(key: key);
@@ -17,13 +17,12 @@ class _LightsControllerViewState extends State<LightsControllerView> {
   late final FirebaseLightsStorage _lights;
   int nb = 0;
 
-  int nbLights(LighrsDataModel lightData) {
+  int nbLights(Iterable<LightsDataModel> lightData) {
     int nb = 0;
-    if (lightData.light_1) {
-      nb++;
-    }
-    if (lightData.light_2) {
-      nb++;
+    for (int i = 0; i < lightData.length; i++) {
+      if (lightData.elementAt(i).light == true) {
+        nb++;
+      }
     }
     return nb;
   }
@@ -59,10 +58,8 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                 );
               case ConnectionState.active:
                 if (snapshot.hasData) {
-                  final lights = snapshot.data as Iterable<LighrsDataModel>;
-                  log(lights.elementAt(0).light_1.toString());
-                  int nb = nbLights(lights.elementAt(0));
-                  log(lights.elementAt(0).light_1.toString());
+                  final lights = snapshot.data as Iterable<LightsDataModel>;
+                  int nb = nbLights(lights);
                   return Container(
                     padding: const EdgeInsets.all(30),
                     width: double.maxFinite,
@@ -98,25 +95,20 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                                     padding: const EdgeInsets.all(0),
                                     splashRadius: 25,
                                     onPressed: () {
-                                        if (lights.elementAt(0).light_1 ==
+                                      if (nb > 0) {
+                                        if (lights.elementAt(nb - 1).light ==
                                             true) {
                                           _lights.updateLight(
-                                            id: lights.elementAt(0).docId,
-                                              light: light1Data,
-                                              lightCondition: false);
-                                        } else if (lights
-                                                .elementAt(0)
-                                                .light_2 ==
-                                            true) {
-                                          _lights.updateLight(
-                                            id: lights.elementAt(0).docId,
-                                              light: light2Data,
-                                              lightCondition: false);
+                                              lightCondition: false,
+                                              id: lights
+                                                  .elementAt(nb - 1)
+                                                  .docId);
                                         }
+                                      }
 
-                                        setState(() {
-                                          nb = nbLights(lights.elementAt(0));
-                                        });
+                                      setState(() {
+                                        nb = nbLights(lights);
+                                      });
                                     },
                                     icon: const Center(
                                       child: Icon(
@@ -143,27 +135,18 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                                     padding: const EdgeInsets.all(0),
                                     splashRadius: 25,
                                     onPressed: () {
-                                      
-                                        if (lights.elementAt(0).light_1 ==
+                                      if (nb < lights.length) {
+                                        if (lights.elementAt(nb).light ==
                                             false) {
                                           _lights.updateLight(
-                                            id: lights.elementAt(0).docId,
-                                              light: light1Data,
-                                              lightCondition: true);
-                                        } else if (lights
-                                                .elementAt(0)
-                                                .light_2 ==
-                                            false) {
-                                          _lights.updateLight(
-                                            id: lights.elementAt(0).docId,
-                                              light: light2Data,
-                                              lightCondition: true);
+                                              lightCondition: true,
+                                              id: lights.elementAt(nb).docId);
                                         }
+                                      }
 
-                                        setState(() {
-                                          nb = nbLights(lights.elementAt(0));
-                                        });
-                                      
+                                      setState(() {
+                                        nb = nbLights(lights);
+                                      });
                                     },
                                     icon: const Center(
                                       child: Icon(
@@ -208,11 +191,12 @@ class _LightsControllerViewState extends State<LightsControllerView> {
 
               default:
                 log('here4');
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
             }
           },
-        ));
+        )
+        );
   }
 }

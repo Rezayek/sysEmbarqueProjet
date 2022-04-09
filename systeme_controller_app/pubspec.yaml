@@ -36,8 +36,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  font_awesome_flutter: ^10.1.0
   qr_flutter: ^4.0.0
-  
 
 dev_dependencies:
   flutter_lints: ^2.0.0

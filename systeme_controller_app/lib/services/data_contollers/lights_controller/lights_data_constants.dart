@@ -1,0 +1,2 @@
+
+const String lightData = 'light';
