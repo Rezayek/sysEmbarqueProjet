@@ -44,7 +44,6 @@ class ViewsController extends StatelessWidget {
       if (state is AuthStateLoggedOut) {
         return LoginView();
       } else if (state is AuthStateRegistering) {
-        log('entered');
         return const RegisterView();
       } else if (state is AuthStateLoggedIn) {
         return MainView();

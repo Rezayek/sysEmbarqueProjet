@@ -5,6 +5,8 @@ import 'package:systeme_controller_app/services/auth/bloc/auth_bloc.dart';
 import 'package:systeme_controller_app/services/auth/bloc/auth_event.dart';
 import 'package:systeme_controller_app/services/auth/bloc/auth_state.dart';
 
+import '../../utilities/dialogs/error_dialog.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
@@ -36,9 +38,14 @@ class _RegisterViewState extends State<RegisterView> {
       listener: (context, state) async {
         if (state is AuthStateRegistering) {
           if (state.exception is WeakPasswordException) {
+            await showErrorDialog(context, 'Weak password');
           } else if (state.exception is EmailAlreadyInUseException) {
+            await showErrorDialog(context, 'Email is already used');
           } else if (state.exception is InvalidEmailException) {
-          } else if (state.exception is GenericAuthException) {}
+            await showErrorDialog(context, 'Invalid email');
+          } else if (state.exception is GenericAuthException) {
+            await showErrorDialog(context, 'please check your given infos');
+          }
         }
       },
       child: Scaffold(

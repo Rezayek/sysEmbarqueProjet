@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -13,6 +15,8 @@ import 'package:systeme_controller_app/services/auth/user_data_firebase/firebase
 import 'package:systeme_controller_app/views/main_views/controllers/fans_contoller_view.dart';
 import 'package:systeme_controller_app/views/main_views/controllers/lights_controller_view.dart';
 import 'package:systeme_controller_app/views/main_views/qr_view.dart';
+
+import '../../utilities/dialogs/logout_dialog.dart';
 
 class MainView extends StatefulWidget {
   MainView({Key? key}) : super(key: key);
@@ -47,8 +51,11 @@ class _MainViewState extends State<MainView> {
           children: [
             IconButton(
               icon: const Icon(Icons.logout),
-              onPressed: () {
-                context.read<AuthBloc>().add(const AuthEventLogOut());
+              onPressed: ()async {
+                final shouldLogOut =await showLogOutDialog(context);
+                if (shouldLogOut) {
+                  context.read<AuthBloc>().add(const AuthEventLogOut());
+                }
               },
             ),
             const SizedBox(
@@ -67,7 +74,6 @@ class _MainViewState extends State<MainView> {
               child: StreamBuilder(
                 stream: userData.userDataStream(),
                 builder: (context, snapshot) {
-                  sleep(Duration(milliseconds: 1));
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
                       return const Center(child: Text("check your connection"));
@@ -156,7 +162,9 @@ class _MainViewState extends State<MainView> {
                                                 userAccountAccess: false,
                                                 fieldName: userIsAllowedLights);
                                           }
-                                          setState(() {});
+                                          setState(() {
+                                            
+                                          });
                                         },
                                         child: Container(
                                           height: 45,

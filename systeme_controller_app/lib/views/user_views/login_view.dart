@@ -7,6 +7,8 @@ import 'package:systeme_controller_app/services/auth/bloc/auth_bloc.dart';
 import 'package:systeme_controller_app/services/auth/bloc/auth_event.dart';
 import 'package:systeme_controller_app/services/auth/bloc/auth_state.dart';
 
+import '../../utilities/dialogs/error_dialog.dart';
+
 class LoginView extends StatefulWidget {
   LoginView({Key? key}) : super(key: key);
 
@@ -37,8 +39,12 @@ class _LoginViewState extends State<LoginView> {
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
           if (state.exception is UserNotFoundException) {
+            await showErrorDialog(context, 'User not found');
           } else if (state.exception is WrongPasswordException) {
-          } else if (state.exception is GenericAuthException) {}
+            await showErrorDialog(context, 'Wrong email or password');
+          } else if (state.exception is GenericAuthException) {
+            await showErrorDialog(context, 'indentified Error try again');
+          }
         }
       },
       child: Scaffold(
