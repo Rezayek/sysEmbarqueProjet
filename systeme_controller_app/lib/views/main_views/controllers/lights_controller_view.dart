@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:systeme_controller_app/utilities/dialogs/error_dialog.dart';
 
+import '../../../services/data_contollers/fans_controller/fans_data_exceptions.dart';
 import '../../../services/data_contollers/lights_controller/firebase_lights_storage.dart';
 import '../../../services/data_contollers/lights_controller/lights_data_model.dart';
 
@@ -94,8 +96,9 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                                   IconButton(
                                     padding: const EdgeInsets.all(0),
                                     splashRadius: 25,
-                                    onPressed: () {
-                                      if (nb > 0) {
+                                    onPressed: () async {
+                                      try {
+                                        if (nb > 0) {
                                         if (lights.elementAt(nb - 1).light ==
                                             true) {
                                           _lights.updateLight(
@@ -105,6 +108,11 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                                                   .docId);
                                         }
                                       }
+                                        
+                                      } on FailedToUpdateLightException {
+                                        await showErrorDialog(context, "Failed to light off");
+                                      }
+                                      
 
                                       setState(() {
                                         nb = nbLights(lights);
@@ -134,8 +142,9 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                                   IconButton(
                                     padding: const EdgeInsets.all(0),
                                     splashRadius: 25,
-                                    onPressed: () {
-                                      if (nb < lights.length) {
+                                    onPressed: () async {
+                                      try {
+                                        if (nb < lights.length) {
                                         if (lights.elementAt(nb).light ==
                                             false) {
                                           _lights.updateLight(
@@ -143,6 +152,11 @@ class _LightsControllerViewState extends State<LightsControllerView> {
                                               id: lights.elementAt(nb).docId);
                                         }
                                       }
+                                      } on FailedToUpdateLightException {
+                                        await showErrorDialog(context, "Failed to light up");
+                                      }
+                                      
+                                      
 
                                       setState(() {
                                         nb = nbLights(lights);

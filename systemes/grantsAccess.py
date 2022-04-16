@@ -22,12 +22,20 @@ cred = credentials.Certificate("syscontrollerapptp-firebase-adminsdk-vfulm-e28f0
 firebase_admin.initialize_app(cred)
 firestore_db = firestore.client()
 docs = firestore_db.collection(u'users').where(u'user_id',u'==', userId,).get()
+docs_1 = firestore_db.collection(u'lights').get()
+docs_2 = firestore_db.collection(u'fans').get()
 
 for doc in docs:
     id = doc.id
-    item = doc.to_dict()
 
-print(item)    
+for doc in docs_1:
+    item = doc.get('light')
+    print(item)
+for doc in docs_2:
+    item = doc.get('is_spinning')
+    print(item)
+
+    
 
 firestore_db.collection(u'users').document(id).update({u'user_access_'+system:True,})
 
