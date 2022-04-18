@@ -48,7 +48,7 @@ class ViewsController extends StatelessWidget {
       } else if (state is AuthStateLoggedIn) {
         return MainView();
       } else if (state is AuthStateNeedsVerification) {
-        return VerificationView();
+        return const VerificationView();
       } else {
         return const Scaffold(
           body: Center(

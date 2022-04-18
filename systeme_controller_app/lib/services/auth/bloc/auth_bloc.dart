@@ -25,13 +25,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final email = event.email;
       final password = event.password;
       final access = event.access;
+      final accessFan = event.accessFan;
       FirebaseUserStorage userStorage = FirebaseUserStorage();
 
       try {
         final user =
             await provider.createUser(email: email, password: password);
         await userStorage.createUserData(
-            userOwnId: user.id, userOwnEmail: email, userHasLightsAccess: access);
+            userOwnId: user.id,
+            userOwnEmail: email,
+            userHasLightsAccess: access,
+            userHasFanAccess: accessFan);
         emit(const AuthStateNeedsVerification());
         await provider.sendEmailVerification();
       } on Exception catch (e) {

@@ -25,9 +25,9 @@ class AuthEventRegister extends AuthEvent {
   final String email;
   final String password;
   final bool access = false;
+  final bool accessFan = false;
 
-  AuthEventRegister(this.email,this.password);
-  
+  AuthEventRegister(this.email, this.password);
 }
 
 class AuthEventShouldRegister extends AuthEvent {

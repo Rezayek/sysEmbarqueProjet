@@ -37,11 +37,13 @@ class FirebaseUserStorage {
     required String userOwnId,
     required String userOwnEmail,
     required bool userHasLightsAccess,
+    required bool userHasFanAccess,
   }) async {
     await users.add({
       userCurrentId: userOwnId,
       userEmail: userOwnEmail,
       userIsAllowedLights: userHasLightsAccess,
+      userIsAllowedFans: userHasFanAccess,
     });
   }
 
